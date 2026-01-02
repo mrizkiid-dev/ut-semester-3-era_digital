@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lihat Semua Soal & Jawaban - Quiz MKDI4202</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --success: #22c55e;
+            --bg: #f8fafc;
+            --card: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: var(--card);
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: #f1f5f9;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #475569;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-btn:hover {
+            background: #e2e8f0;
+        }
+
+        h1 {
+            color: #1e293b;
+            font-size: 1.5rem;
+            margin: 0 0 0 1rem;
+            flex: 1;
+        }
+
+        .review-item {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .review-question {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .review-options {
+            margin-left: 1rem;
+        }
+
+        .review-option {
+            padding: 0.5rem 0;
+            color: #475569;
+            line-height: 1.5;
+        }
+
+        .review-option.is-correct {
+            color: var(--success);
+            font-weight: 600;
+            background: #dcfce7;
+            padding: 0.5rem;
+            border-radius: 6px;
+            margin: 0.25rem 0;
+        }
+
+        .review-option.is-correct::before {
+            content: "✓ ";
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <a href="index.html" class="back-btn">← Kembali</a>
+        <h1>Semua Soal & Kunci Jawaban</h1>
+    </div>
+
+    <div id="review-content"></div>
+</div>
+
+<script>
+    const questionBank = [
+        { q: "1. Atribut warga digital yang berusaha untuk mencegah agar mereka tidak terjerumus dalam cyberbullying atau hoax termasuk dalam atribut...", o: ["A. hak dan tanggungjawab digital", "B. keamanan digital dan privasi", "C. hukum digital", "D. kesopanan digital"], a: 3 },
+        { q: "2. Upaya yang dilakukan oleh individu untuk melindungi data dan informasi pribadinya di dunia maya dikenal sebagai...", o: ["A. privasi digital", "B. keamanan siber", "C. etika digital", "D. literasi digital"], a: 0 },
+        { q: "3. Berikut yang bukan merupakan ciri-ciri dari hoax adalah...", o: ["A. informasi yang tidak jelas sumbernya", "B. cenderung mengandung unsur provokasi", "C. disertai dengan bukti yang akurat", "D. menyebar dengan sangat cepat di media sosial"], a: 2 },
+        { q: "4. Cyberbullying dapat diartikan sebagai...", o: ["A. tindakan intimidasi yang dilakukan secara online", "B. penyebaran informasi palsu untuk menjatuhkan seseorang", "C. pencurian data pribadi melalui internet", "D. penggunaan komputer untuk kejahatan"], a: 0 },
+        { q: "5. Salah satu cara untuk menjaga keamanan password adalah...", o: ["A. menggunakan tanggal lahir sebagai password", "B. mengganti password secara berkala", "C. menggunakan nama hewan peliharaan", "D. menggunakan kata 'password'"], a: 1 },
+        { q: "6. Phishing adalah salah satu bentuk kejahatan siber yang bertujuan untuk...", o: ["A. meretas akun media sosial", "B. mencuri informasi pribadi", "C. menyebarkan virus komputer", "D. semua jawaban benar"], a: 1 },
+        { q: "7. Berikut ini yang termasuk dalam etika bermedia sosial adalah...", o: ["A. saling menghujat antar pengguna", "B. menyebarkan berita bohong", "C. menghormati privasi orang lain", "D. menggunakan akun palsu"], a: 2 },
+        { q: "8. Jika menerima email yang mencurigakan, sebaiknya Anda...", o: ["A. langsung membukanya", "B. menghapus tanpa membukanya", "C. meneruskan ke teman-teman", "D. membalas dengan menanyakan kejelasan"], a: 1 },
+        { q: "9. Berikut yang bukan merupakan dampak positif dari internet adalah...", o: ["A. mempermudah akses informasi", "B. mempercepat komunikasi", "C. meningkatkan kualitas tidur", "D. sebagai sarana belajar"], a: 2 },
+        { q: "10. Untuk terhindar dari penipuan online, kita perlu...", o: ["A. selalu percaya dengan tawaran yang menguntungkan", "B. memeriksa ulang informasi yang diterima", "C. memberikan data pribadi sembarangan", "D. menggunakan satu password untuk semua akun"], a: 1 },
+        { q: "11. Apa yang dimaksud dengan literasi digital?", o: ["A. Kemampuan untuk membaca dan menulis di dunia digital", "B. Kemampuan untuk menggunakan perangkat lunak dengan baik", "C. Pemahaman tentang cara kerja internet", "D. Semua jawaban benar"], a: 3 },
+        { q: "12. Mengapa penting untuk memverifikasi informasi yang kita terima di internet?", o: ["A. Agar tidak terjebak dalam hoax", "B. Untuk mempercepat penyebaran informasi", "C. Karena semua informasi di internet itu benar", "D. Agar terlihat pintar di depan orang lain"], a: 0 },
+        { q: "13. Apa yang harus dilakukan jika menjadi korban cyberbullying?", o: ["A. Membalas dengan cara yang sama", "B. Mengabaikan dan tidak melaporkan", "C. Melaporkan kepada pihak berwajib dan mencari dukungan", "D. Menyebarkan informasi pribadi pelaku"], a: 2 },
+        { q: "14. Berikut ini yang termasuk dalam tindakan preventif terhadap kejahatan siber adalah...", o: ["A. Menggunakan antivirus yang update", "B. Membuka semua lampiran email", "C. Menggunakan password yang mudah ditebak", "D. Tidak perlu melakukan backup data"], a: 0 },
+        { q: "15. Apa yang dimaksud dengan jejak digital?", o: ["A. Rekaman semua aktivitas online seseorang", "B. Bukti fisik dari kejahatan siber", "C. Data yang tersimpan di cloud", "D. Semua jawaban benar"], a: 0 },
+        { q: "16. Menggunakan jaringan Wi-Fi umum tanpa perlindungan yang tepat dapat mengakibatkan...", o: ["A. Kecepatan internet yang lebih tinggi", "B. Pencurian data pribadi", "C. Tidak ada dampak sama sekali", "D. Semua jawaban salah"], a: 1 },
+        { q: "17. Apa yang dimaksud dengan spam?", o: ["A. Makanan yang tidak sehat", "B. Pesan tidak diinginkan yang dikirim secara massal", "C. Virus yang merusak sistem komputer", "D. Semua jawaban benar"], a: 1 },
+        { q: "18. Berikut ini yang bukan merupakan cara melindungi privasi online adalah...", o: ["A. Menggunakan pengaturan privasi yang ketat", "B. Membagikan password dengan teman dekat", "C. Memperbarui perangkat lunak secara berkala", "D. Berhati-hati terhadap informasi yang dibagikan"], a: 1 },
+        { q: "19. Apa yang harus dilakukan jika lupa password akun?", o: ["A. Menghubungi teman untuk meminta bantuan", "B. Menggunakan fitur lupa password yang disediakan", "C. Mendaftar akun baru", "D. Semua jawaban benar"], a: 1 },
+        { q: "20. Mengapa kita perlu berpikir kritis terhadap informasi yang kita terima?", o: ["A. Agar tidak mudah terpengaruh oleh berita palsu", "B. Untuk mempercayai semua yang dikatakan di internet", "C. Karena semua informasi di internet itu bohong", "D. Agar bisa menyebarkan informasi dengan cepat"], a: 0 },
+        { q: "21. Apa yang dimaksud dengan keamanan siber?", o: ["A. Perlindungan sistem komputer dan jaringan dari ancaman siber", "B. Keamanan data pribadi di media sosial", "C. Tindakan melanggar hukum di dunia maya", "D. Semua jawaban benar"], a: 0 },
+        { q: "22. Berikut ini yang termasuk dalam tindakan yang melanggar etika digital adalah...", o: ["A. Menghargai pendapat orang lain", "B. Menyebarkan kebencian atau diskriminasi", "C. Berbagi informasi yang bermanfaat", "D. Menggunakan bahasa yang sopan"], a: 1 },
+        { q: "23. Apa yang harus dilakukan jika menemukan konten negatif di internet?", o: ["A. Mengabaikan dan tidak melaporkan", "B. Melaporkan kepada pihak yang berwenang", "C. Menyebarkan konten tersebut agar diketahui banyak orang", "D. Semua jawaban benar"], a: 1 },
+        { q: "24. Mengapa penting untuk menggunakan password yang kuat?", o: ["A. Agar mudah diingat", "B. Untuk meningkatkan keamanan akun", "C. Karena semua orang melakukannya", "D. Agar terlihat profesional"], a: 1 },
+        { q: "25. Apa yang dimaksud dengan malware?", o: ["A. Perangkat keras yang rusak", "B. Perangkat lunak berbahaya yang dirancang untuk merusak sistem", "C. Jaringan komputer yang terinfeksi", "D. Semua jawaban benar"], a: 1 },
+        { q: "26. Berikut ini yang bukan merupakan ciri-ciri dari cyberbullying adalah...", o: ["A. Tindakan agresif yang dilakukan secara online", "B. Tujuan untuk menyakiti atau menjatuhkan korban", "C. Dilakukan secara sembunyi-sembunyi", "D. Selalu melibatkan ancaman fisik"], a: 3 },
+        { q: "27. Apa yang harus dilakukan jika menerima tawaran pekerjaan yang mencurigakan melalui email?", o: ["A. Langsung menerima tawaran tersebut", "B. Mengabaikan dan menghapus email tersebut", "C. Meneruskan email ke teman-teman", "D. Membalas dengan menanyakan kejelasan tawaran"], a: 1 },
+        { q: "28. Menggunakan satu password untuk semua akun berisiko karena...", o: ["A. Memudahkan mengingat password", "B. Jika satu akun diretas, semua akun jadi rentan", "C. Tidak ada risiko sama sekali", "D. Semua jawaban benar"], a: 1 },
+        { q: "29. Apa yang dimaksud dengan enkripsi?", o: ["A. Proses mengubah data menjadi kode untuk mencegah akses tidak sah", "B. Proses menghapus data secara permanen", "C. Proses menduplikasi data", "D. Semua jawaban benar"], a: 0 },
+        { q: "30. Berikut ini yang termasuk dalam tindakan yang dapat merugikan diri sendiri di dunia maya adalah...", o: ["A. Berbagi informasi pribadi secara sembarangan", "B. Menggunakan foto profil yang profesional", "C. Mengatur pengaturan privasi dengan ketat", "D. Semua jawaban benar"], a: 0 },
+        { q: "31. Apa yang harus dilakukan jika akun media sosial diretas?", o: ["A. Mengubah password segera", "B. Mengabaikan dan tidak melakukan apa-apa", "C. Membuat akun baru dan meninggalkan yang lama", "D. Semua jawaban benar"], a: 0 },
+        { q: "32. Mengapa penting untuk mempelajari keamanan siber?", o: ["A. Agar bisa menjadi hacker", "B. Untuk melindungi diri dari ancaman siber", "C. Karena semua orang melakukannya", "D. Agar bisa mengakses konten terlarang"], a: 1 },
+        { q: "33. Apa yang dimaksud dengan phishing?", o: ["A. Tindakan mencuri data pribadi dengan menyamar sebagai entitas tepercaya", "B. Mengirimkan virus melalui email", "C. Menyebarkan informasi palsu di media sosial", "D. Semua jawaban benar"], a: 0 },
+        { q: "34. Berikut ini yang bukan merupakan dampak negatif dari cyberbullying adalah...", o: ["A. Menurunnya rasa percaya diri korban", "B. Korban merasa terasing dan kesepian", "C. Meningkatnya popularitas korban", "D. Gangguan kesehatan mental pada korban"], a: 2 },
+        { q: "35. Apa yang harus dilakukan jika menemukan informasi yang salah di internet?", o: ["A. Mengabaikan dan tidak melaporkan", "B. Meluruskan informasi tersebut dengan bukti yang akurat", "C. Menyebarkan informasi tersebut agar diketahui banyak orang", "D. Semua jawaban benar"], a: 1 },
+        { q: "36. Mengapa kita perlu berhati-hati dalam membagikan informasi di media sosial?", o: ["A. Agar tidak menjadi korban penipuan atau kejahatan siber", "B. Karena semua informasi di media sosial itu bohong", "C. Agar bisa terkenal dengan cepat", "D. Semua jawaban benar"], a: 0 },
+        { q: "37. Apa yang dimaksud dengan identitas digital?", o: ["A. Identitas seseorang di dunia nyata", "B. Jejak online yang ditinggalkan seseorang di internet", "C. Kumpulan password dan username", "D. Semua jawaban benar"], a: 1 },
+        { q: "38. Berikut ini yang termasuk dalam tindakan yang dapat meningkatkan keamanan akun adalah...", o: ["A. Menggunakan password yang kuat dan unik", "B. Mengabaikan pembaruan keamanan", "C. Menggunakan informasi pribadi sebagai password", "D. Semua jawaban benar"], a: 0 },
+        { q: "39. Apa yang harus dilakukan jika menerima pesan yang mencurigakan di media sosial?", o: ["A. Mengabaikan dan tidak membalas pesan tersebut", "B. Membalas dengan menanyakan siapa pengirimnya", "C. Meneruskan pesan tersebut ke orang lain", "D. Semua jawaban benar"], a: 0 },
+        { q: "40. Mengapa penting untuk melakukan backup data?", o: ["A. Agar data tidak hilang jika terjadi sesuatu pada perangkat", "B. Untuk mempercepat kinerja perangkat", "C. Karena semua orang melakukannya", "D. Agar data bisa diakses oleh orang lain"], a: 0 },
+        { q: "41. Apa yang dimaksud dengan kejahatan siber?", o: ["A. Tindakan kriminal yang dilakukan dengan menggunakan komputer atau internet", "B. Kejahatan yang hanya terjadi di dunia nyata", "C. Semua tindakan yang merugikan di dunia maya", "D. Semua jawaban benar"], a: 0 },
+        { q: "42. Berikut ini yang bukan merupakan cara melindungi diri dari kejahatan siber adalah...", o: ["A. Menggunakan perangkat lunak keamanan yang terpercaya", "B. Membuka semua lampiran email yang diterima", "C. Tidak mengklik tautan yang mencurigakan", "D. Mengatur pengaturan privasi dengan ketat"], a: 1 },
+        { q: "43. Apa yang harus dilakukan jika menemukan akun palsu yang mengatasnamakan kita?", o: ["A. Mengabaikan dan tidak melaporkan", "B. Melaporkan kepada pihak yang berwenang dan memberi tahu teman-teman", "C. Menggunakan akun palsu tersebut untuk balas dendam", "D. Semua jawaban benar"], a: 1 },
+        { q: "44. Mengapa kita perlu memperhatikan jejak digital yang ditinggalkan?", o: ["A. Karena jejak digital tidak dapat dihapus", "B. Agar tidak merugikan diri sendiri di kemudian hari", "C. Karena jejak digital mencerminkan identitas kita di dunia maya", "D. Semua jawaban benar"], a: 3 },
+        { q: "45. Apa yang dimaksud dengan social engineering dalam konteks kejahatan siber?", o: ["A. Teknik untuk meretas akun media sosial", "B. Manipulasi psikologis untuk mendapatkan informasi rahasia", "C. Penyebaran virus melalui media sosial", "D. Semua jawaban benar"], a: 1 },
+        { q: "46. Berikut ini yang termasuk dalam tindakan yang dapat merugikan orang lain di dunia maya adalah...", o: ["A. Menyebarkan berita bohong", "B. Menghormati pendapat orang lain", "C. Berbagi informasi yang bermanfaat", "D. Menggunakan bahasa yang sopan"], a: 0 },
+        { q: "47. Apa yang harus dilakukan jika menjadi saksi kejahatan siber?", o: ["A. Mengabaikan dan tidak melaporkan", "B. Melaporkan kepada pihak yang berwenang dengan bukti yang ada", "C. Meneruskan informasi tersebut ke media", "D. Semua jawaban benar"], a: 1 },
+        { q: "48. Mengapa penting untuk mengetahui cara melindungi diri di dunia maya?", o: ["A. Agar tidak menjadi korban kejahatan siber", "B. Untuk bisa melakukan kejahatan siber dengan aman", "C. Karena semua orang melakukannya", "D. Agar bisa mengakses konten terlarang"], a: 0 },
+        { q: "49. Apa yang dimaksud dengan cyber hygiene?", o: ["A. Kebiasaan baik dalam menggunakan teknologi dan internet", "B. Tindakan membersihkan virus dari komputer", "C. Proses menghapus data secara permanen", "D. Semua jawaban benar"], a: 0 },
+        { q: "50. Berikut ini yang bukan merupakan ciri-ciri dari informasi yang dapat dipercaya adalah...", o: ["A. Sumbernya jelas dan dapat dipertanggungjawabkan", "B. Mengandung banyak iklan dan promosi", "C. Disajikan secara objektif dan berimbang", "D. Memiliki bukti atau referensi yang akurat"], a: 1 },
+        { q: "51. Apa yang harus dilakukan jika menemukan tawaran investasi yang terlalu bagus untuk jadi kenyataan?", o: ["A. Langsung berinvestasi tanpa ragu", "B. Mencari tahu lebih lanjut dan memverifikasi informasi", "C. Mengabaikan dan menghapus tawaran tersebut", "D. Semua jawaban benar"], a: 1 },
+        { q: "52. Mengapa kita perlu waspada terhadap penipuan online?", o: ["A. Karena penipuan online semakin marak terjadi", "B. Agar tidak kehilangan uang atau data pribadi", "C. Karena semua orang melakukannya", "D. Agar bisa mendapatkan barang atau jasa secara gratis"], a: 1 },
+        { q: "53. Apa yang dimaksud dengan keamanan informasi?", o: ["A. Perlindungan informasi dari akses, pengungkapan, atau penghancuran yang tidak sah", "B. Keamanan fisik dari perangkat keras", "C. Tindakan melanggar hukum di dunia maya", "D. Semua jawaban benar"], a: 0 },
+        { q: "54. Berikut ini yang termasuk dalam tindakan yang dapat meningkatkan keamanan siber pribadi adalah...", o: ["A. Menggunakan perangkat lunak keamanan yang update", "B. Membuka semua lampiran email tanpa curiga", "C. Menggunakan password yang sama untuk semua akun", "D. Semua jawaban benar"], a: 0 },
+        { q: "55. Apa yang harus dilakukan jika menerima telepon dari nomor yang tidak dikenal dan mencurigakan?", o: ["A. Mengabaikan dan tidak menjawab", "B. Membalas dengan menanyakan siapa pengirimnya", "C. Mengangkat telepon dan berbicara seperti biasa", "D. Semua jawaban benar"], a: 0 },
+        { q: "56. Mengapa penting untuk memperbarui perangkat lunak secara berkala?", o: ["A. Agar perangkat selalu dalam kondisi terbaik dan aman dari ancaman", "B. Untuk menghemat ruang penyimpanan", "C. Karena semua orang melakukannya", "D. Agar perangkat bisa digunakan selamanya"], a: 0 },
+        { q: "57. Apa yang dimaksud dengan password manager?", o: ["A. Alat untuk mengelola dan menyimpan password dengan aman", "B. Perangkat keras untuk meningkatkan keamanan komputer", "C. Software untuk mendeteksi virus", "D. Semua jawaban benar"], a: 0 },
+        { q: "58. Berikut ini yang bukan merupakan manfaat dari menggunakan password manager adalah...", o: ["A. Memudahkan mengingat dan mengelola password", "B. Meningkatkan keamanan dengan membuat password yang kuat", "C. Menyimpan semua informasi pribadi dalam satu tempat", "D. Semua jawaban benar"], a: 2 },
+        { q: "59. Apa yang harus dilakukan jika menemukan link yang mencurigakan di media sosial?", o: ["A. Mengabaikan dan tidak mengklik link tersebut", "B. Mengklik link tersebut untuk mengetahui lebih lanjut", "C. Meneruskan link tersebut ke teman-teman", "D. Semua jawaban benar"], a: 0 },
+        { q: "60. Mengapa kita perlu berhati-hati dalam memberikan informasi pribadi di internet?", o: ["A. Agar tidak disalahgunakan oleh pihak yang tidak bertanggung jawab", "B. Karena semua informasi di internet itu bohong", "C. Agar bisa mendapatkan barang atau jasa secara gratis", "D. Semua jawaban benar"], a: 0 },
+        { q: "61. Apa yang dimaksud dengan two-factor authentication?", o: ["A. Metode keamanan yang memerlukan dua bentuk verifikasi identitas", "B. Proses mengubah password secara berkala", "C. Metode untuk meretas akun dengan mudah", "D. Semua jawaban benar"], a: 0 },
+        { q: "62. Berikut ini yang termasuk dalam tindakan yang dapat melindungi akun dari akses tidak sah adalah...", o: ["A. Menggunakan password yang kuat dan unik", "B. Mengabaikan pembaruan keamanan", "C. Menggunakan informasi pribadi sebagai password", "D. Semua jawaban benar"], a: 0 },
+        { q: "63. Apa yang harus dilakukan jika menerima pesan berantai yang mencurigakan?", o: ["A. Mengabaikan dan tidak meneruskan pesan tersebut", "B. Meneruskan pesan tersebut ke semua kontak", "C. Membalas pesan tersebut untuk menanyakan kejelasan", "D. Semua jawaban benar"], a: 0 },
+        { q: "64. Mengapa penting untuk mengetahui cara melindungi privasi di dunia maya?", o: ["A. Agar tidak menjadi korban penipuan atau kejahatan siber", "B. Untuk bisa melakukan kejahatan siber dengan aman", "C. Karena semua orang melakukannya", "D. Agar bisa mengakses konten terlarang"], a: 0 },
+        { q: "65. Apa yang dimaksud dengan digital footprint?", o: ["A. Jejak online yang ditinggalkan seseorang di internet", "B. Bukti fisik dari kejahatan siber", "C. Data yang tersimpan di cloud", "D. Semua jawaban benar"], a: 0 },
+        { q: "66. Berikut ini yang bukan merupakan cara melindungi diri dari penipuan online adalah...", o: ["A. Selalu waspada dan skeptis terhadap tawaran yang terlalu bagus", "B. Memberikan informasi pribadi kepada sembarang orang", "C. Menggunakan password yang berbeda untuk setiap akun", "D. Memeriksa ulang alamat URL situs yang dikunjungi"], a: 1 },
+        { q: "67. Apa yang harus dilakukan jika menemukan konten yang melanggar hukum di internet?", o: ["A. Mengabaikan dan tidak melaporkan", "B. Melaporkan kepada pihak yang berwenang", "C. Menyebarkan konten tersebut agar diketahui banyak orang", "D. Semua jawaban benar"], a: 1 },
+        { q: "68. Mengapa kita perlu memperhatikan keamanan perangkat yang digunakan?", o: ["A. Agar terhindar dari ancaman siber seperti virus atau malware", "B. Untuk mempercepat kinerja perangkat", "C. Karena semua orang melakukannya", "D. Agar perangkat bisa digunakan selamanya"], a: 0 },
+        { q: "69. Apa yang dimaksud dengan cyber attack?", o: ["A. Serangan yang dilakukan oleh individu atau kelompok untuk merusak sistem komputer atau jaringan", "B. Tindakan melindungi sistem dari ancaman", "C. Proses memperbaiki kerusakan pada sistem", "D. Semua jawaban benar"], a: 0 },
+        { q: "70. Berikut ini yang termasuk dalam tindakan yang dapat merugikan diri sendiri di dunia maya adalah...", o: ["A. Berbagi informasi pribadi secara sembarangan", "B. Menggunakan foto profil yang profesional", "C. Mengatur pengaturan privasi dengan ketat", "D. Semua jawaban benar"], a: 0 },
+        { q: "71. Apa yang harus dilakukan jika akun media sosial diretas?", o: ["A. Mengubah password segera", "B. Mengabaikan dan tidak melakukan apa-apa", "C. Membuat akun baru dan meninggalkan yang lama", "D. Semua jawaban benar"], a: 0 },
+        { q: "72. Mengapa penting untuk mempelajari keamanan siber?", o: ["A. Agar bisa menjadi hacker", "B. Untuk melindungi diri dari ancaman siber", "C. Karena semua orang melakukannya", "D. Agar bisa mengakses konten terlarang"], a: 1 },
+        { q: "73. Apa yang dimaksud dengan ransomware?", o: ["A. Perangkat lunak yang merusak data dan meminta tebusan untuk memulihkannya", "B. Virus yang hanya menyerang komputer tertentu", "C. Program yang mempercepat kinerja komputer", "D. Semua jawaban benar"], a: 0 },
+        { q: "74. Berikut ini yang bukan merupakan ciri-ciri dari informasi yang dapat dipercaya adalah...", o: ["A. Sumbernya jelas dan dapat dipertanggungjawabkan", "B. Mengandung banyak iklan dan promosi", "C. Disajikan secara objektif dan berimbang", "D. Memiliki bukti atau referensi yang akurat"], a: 1 },
+        { q: "75. Apa yang harus dilakukan jika menemukan tawaran investasi yang terlalu bagus untuk jadi kenyataan?", o: ["A. Langsung berinvestasi tanpa ragu", "B. Mencari tahu lebih lanjut dan memverifikasi informasi", "C. Mengabaikan dan menghapus tawaran tersebut", "D. Semua jawaban benar"], a: 1 },
+        { q: "76. Mengapa kita perlu waspada terhadap penipuan online?", o: ["A. Karena penipuan online semakin marak terjadi", "B. Agar tidak kehilangan uang atau data pribadi", "C. Karena semua orang melakukannya", "D. Agar bisa mendapatkan barang atau jasa secara gratis"], a: 1 },
+        { q: "77. Apa yang dimaksud dengan keamanan informasi?", o: ["A. Perlindungan informasi dari akses, pengungkapan, atau penghancuran yang tidak sah", "B. Keamanan fisik dari perangkat keras", "C. Tindakan melanggar hukum di dunia maya", "D. Semua jawaban benar"], a: 0 },
+        { q: "78. Berikut ini yang termasuk dalam tindakan yang dapat meningkatkan keamanan siber pribadi adalah...", o: ["A. Menggunakan perangkat lunak keamanan yang update", "B. Membuka semua lampiran email tanpa curiga", "C. Menggunakan password yang sama untuk semua akun", "D. Semua jawaban benar"], a: 0 },
+        { q: "79. Apa yang harus dilakukan jika menerima telepon dari nomor yang tidak dikenal dan mencurigakan?", o: ["A. Mengabaikan dan tidak menjawab", "B. Membalas dengan menanyakan siapa pengirimnya", "C. Mengangkat telepon dan berbicara seperti biasa", "D. Semua jawaban benar"], a: 0 },
+        { q: "80. Mengapa penting untuk memperbarui perangkat lunak secara berkala?", o: ["A. Agar perangkat selalu dalam kondisi terbaik dan aman dari ancaman", "B. Untuk menghemat ruang penyimpanan", "C. Karena semua orang melakukannya", "D. Agar perangkat bisa digunakan selamanya"], a: 0 },
+        { q: "81. Apa yang dimaksud dengan password manager?", o: ["A. Alat untuk mengelola dan menyimpan password dengan aman", "B. Perangkat keras untuk meningkatkan keamanan komputer", "C. Software untuk mendeteksi virus", "D. Semua jawaban benar"], a: 0 },
+        { q: "82. Berikut ini yang bukan merupakan manfaat dari menggunakan password manager adalah...", o: ["A. Memudahkan mengingat dan mengelola password", "B. Meningkatkan keamanan dengan membuat password yang kuat", "C. Menyimpan semua informasi pribadi dalam satu tempat", "D. Semua jawaban benar"], a: 2 },
+        { q: "83. Apa yang harus dilakukan jika menemukan link yang mencurigakan di media sosial?", o: ["A. Mengabaikan dan tidak mengklik link tersebut", "B. Mengklik link tersebut untuk mengetahui lebih lanjut", "C. Meneruskan link tersebut ke teman-teman", "D. Semua jawaban benar"], a: 0 },
+        { q: "84. Mengapa kita perlu berhati-hati dalam memberikan informasi pribadi di internet?", o: ["A. Agar tidak disalahgunakan oleh pihak yang tidak bertanggung jawab", "B. Karena semua informasi di internet itu bohong", "C. Agar bisa mendapatkan barang atau jasa secara gratis", "D. Semua jawaban benar"], a: 0 },
+        { q: "85. Apa yang dimaksud dengan two-factor authentication?", o: ["A. Metode keamanan yang memerlukan dua bentuk verifikasi identitas", "B. Proses mengubah password secara berkala", "C. Metode untuk meretas akun dengan mudah", "D. Semua jawaban benar"], a: 0 },
+        { q: "86. Berikut ini yang termasuk dalam tindakan yang dapat melindungi akun dari akses tidak sah adalah...", o: ["A. Menggunakan password yang kuat dan unik", "B. Mengabaikan pembaruan keamanan", "C. Menggunakan informasi pribadi sebagai password", "D. Semua jawaban benar"], a: 0 },
+        { q: "87. Apa yang harus dilakukan jika menerima pesan berantai yang mencurigakan?", o: ["A. Mengabaikan dan tidak meneruskan pesan tersebut", "B. Meneruskan pesan tersebut ke semua kontak", "C. Membalas pesan tersebut untuk menanyakan kejelasan", "D. Semua jawaban benar"], a: 0 },
+        { q: "88. Mengapa penting untuk mengetahui cara melindungi privasi di dunia maya?", o: ["A. Agar tidak menjadi korban penipuan atau kejahatan siber", "B. Untuk bisa melakukan kejahatan siber dengan aman", "C. Karena semua orang melakukannya", "D. Agar bisa mengakses konten terlarang"], a: 0 },
+        { q: "89. Apa yang dimaksud dengan digital footprint?", o: ["A. Jejak online yang ditinggalkan seseorang di internet", "B. Bukti fisik dari kejahatan siber", "C. Data yang tersimpan di cloud", "D. Semua jawaban benar"], a: 0 },
+        { q: "90. Berikut ini yang bukan merupakan cara melindungi diri dari penipuan online adalah...", o: ["A. Selalu waspada dan skeptis terhadap tawaran yang terlalu bagus", "B. Memberikan informasi pribadi kepada sembarang orang", "C. Menggunakan password yang berbeda untuk setiap akun", "D. Memeriksa ulang alamat URL situs yang dikunjungi"], a: 1 },
+        { q: "91. Apa yang harus dilakukan jika menemukan konten yang melanggar hukum di internet?", o: ["A. Mengabaikan dan tidak melaporkan", "B. Melaporkan kepada pihak yang berwenang", "C. Menyebarkan konten tersebut agar diketahui banyak orang", "D. Semua jawaban benar"], a: 1 },
+        { q: "92. Mengapa kita perlu memperhatikan keamanan perangkat yang digunakan?", o: ["A. Agar terhindar dari ancaman siber seperti virus atau malware", "B. Untuk mempercepat kinerja perangkat", "C. Karena semua orang melakukannya", "D. Agar perangkat bisa digunakan selamanya"], a: 0 },
+        { q: "93. Apa yang dimaksud dengan cyber attack?", o: ["A. Serangan yang dilakukan oleh individu atau kelompok untuk merusak sistem komputer atau jaringan", "B. Tindakan melindungi sistem dari ancaman", "C. Proses memperbaiki kerusakan pada sistem", "D. Semua jawaban benar"], a: 0 },
+        { q: "94. Berikut ini yang termasuk dalam tindakan yang dapat merugikan diri sendiri di dunia maya adalah...", o: ["A. Berbagi informasi pribadi secara sembarangan", "B. Menggunakan foto profil yang profesional", "C. Mengatur pengaturan privasi dengan ketat", "D. Semua jawaban benar"], a: 0 },
+        { q: "95. Apa yang harus dilakukan jika akun media sosial diretas?", o: ["A. Mengubah password segera", "B. Mengabaikan dan tidak melakukan apa-apa", "C. Membuat akun baru dan meninggalkan yang lama", "D. Semua jawaban benar"], a: 0 },
+        { q: "96. Mengapa penting untuk mempelajari keamanan siber?", o: ["A. Agar bisa menjadi hacker", "B. Untuk melindungi diri dari ancaman siber", "C. Karena semua orang melakukannya", "D. Agar bisa mengakses konten terlarang"], a: 1 },
+        { q: "97. Apa yang dimaksud dengan ransomware?", o: ["A. Perangkat lunak yang merusak data dan meminta tebusan untuk memulihkannya", "B. Virus yang hanya menyerang komputer tertentu", "C. Program yang mempercepat kinerja komputer", "D. Semua jawaban benar"], a: 0 },
+        { q: "98. Berikut ini yang bukan merupakan ciri-ciri dari informasi yang dapat dipercaya adalah...", o: ["A. Sumbernya jelas dan dapat dipertanggungjawabkan", "B. Mengandung banyak iklan dan promosi", "C. Disajikan secara objektif dan berimbang", "D. Memiliki bukti atau referensi yang akurat"], a: 1 },
+        { q: "99. Apa yang harus dilakukan jika menemukan tawaran investasi yang terlalu bagus untuk jadi kenyataan?", o: ["A. Langsung berinvestasi tanpa ragu", "B. Mencari tahu lebih lanjut dan memverifikasi informasi", "C. Mengabaikan dan menghapus tawaran tersebut", "D. Semua jawaban benar"], a: 1 },
+        { q: "100. Lukisan 'Bisikan Alam' lisensi CC BY-NC-ND artinya...", o: ["A. izin pakai asal bukan jual beli, tanpa ubahan, sebut nama", "B. [Opsi tidak tersedia]", "C. [Opsi tidak tersedia]", "D. [Opsi tidak tersedia]"], a: 0 }
+    ];
+
+    function showReviewMode() {
+        const reviewContent = document.getElementById('review-content');
+        reviewContent.innerHTML = '';
+
+        questionBank.forEach((qData, index) => {
+            const reviewItem = document.createElement('div');
+            reviewItem.className = 'review-item';
+            
+            let optionsHTML = '';
+            qData.o.forEach((opt, optIndex) => {
+                const isCorrect = optIndex === qData.a;
+                optionsHTML += `<div class="review-option ${isCorrect ? 'is-correct' : ''}">${opt}</div>`;
+            });
+
+            reviewItem.innerHTML = `
+                <div class="review-question">${qData.q}</div>
+                <div class="review-options">${optionsHTML}</div>
+            `;
+            
+            reviewContent.appendChild(reviewItem);
+        });
+    }
+
+    showReviewMode();
+</script>
+
+</body>
+</html>
