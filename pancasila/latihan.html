@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mode Latihan - Quiz MKDI4202</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --card: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: var(--card);
+            width: 100%;
+            max-width: 700px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            position: relative;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .back-btn {
+            background: #f1f5f9;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #475569;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-btn:hover {
+            background: #e2e8f0;
+        }
+
+        h1 {
+            color: #1e293b;
+            font-size: 1.5rem;
+            margin: 0 0 0 1rem;
+            flex: 1;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .question-box {
+            margin-bottom: 2rem;
+        }
+
+        .question-text {
+            font-size: 1.25rem;
+            color: #0f172a;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .option-btn {
+            background: #fff;
+            border: 2px solid #e2e8f0;
+            padding: 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-align: left;
+            transition: all 0.2s;
+            color: #334155;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--primary);
+            background: #eff6ff;
+        }
+
+        .option-btn:disabled {
+            cursor: default;
+            opacity: 0.8;
+        }
+
+        .correct {
+            background-color: #dcfce7 !important;
+            border-color: var(--success) !important;
+            color: #14532d !important;
+        }
+
+        .wrong {
+            background-color: #fee2e2 !important;
+            border-color: var(--danger) !important;
+            color: #7f1d1d !important;
+        }
+
+        .nav-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            font-size: 1rem;
+            display: none;
+        }
+
+        .nav-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .result-screen {
+            text-align: center;
+            display: none;
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 0 auto 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-btn">← Kembali</a>
+            <h1>Mode Latihan</h1>
+        </div>
+
+        <div id="quiz-interface">
+            <div class="stats-bar">
+                <span>Soal: <span id="q-current">1</span>/<span id="q-total">0</span></span>
+                <span>Skor: <span id="score">0</span></span>
+            </div>
+
+            <div class="question-box">
+                <div class="question-text" id="question-text">Loading...</div>
+                <div class="options-grid" id="options-container"></div>
+            </div>
+
+            <button class="nav-btn" id="next-btn" onclick="nextQuestion()">Lanjut &rarr;</button>
+        </div>
+
+        <div id="result-screen" class="result-screen">
+            <div class="score-circle" id="final-score">0</div>
+            <h2>Latihan Selesai!</h2>
+            <p>Anda telah menyelesaikan sesi latihan ini.</p>
+            <a href="index.html" class="nav-btn" style="display:inline-block; text-decoration: none;">← Kembali ke
+                Menu</a>
+        </div>
+    </div>
+
+    <script>
+        const questionBank = [
+            { q: "1. Pengertian Pendidikan Kewarganegaraan secara filsafat meliputi perspektif di bawah ini, kecuali ….", o: ["A. aksiologi", "B. metodologi", "C. epistemologi", "D. ontologi"], a: 1 },
+            { q: "2. NKRI adalah negara kepulauan yang berciri Nusantara dengan wilayah yang batas-batas dan hak-haknya ditetapkan dengan undang-undang. Hal ini dinyatakan dalam ….", o: ["A. Pasal 25A UUD NRI 1945", "B. Deklarasi Djuanda 1957", "C. UNCLOS 1982", "D. Undang-Undang No.17 Tahun 1985"], a: 0 },
+            { q: "3. Konsep geopolitik menurut Frederick Ratzel, yakni …", o: ["A. negara adalah organisme dasar sebagai organisasi dan sistem politik", "B. negara mewujudkan sistem politik yang terkait dengan demopolitik, ekonopolitik, sosiopolitik, krasepolitik", "C. negara memiliki semangat ekspansi, militerisme, dan optimisme", "D. negara merupakan organisasi politik yang berperan menyatukan bangsa dan mensejahterakan rakyatnya"], a: 0 },
+            { q: "4. Ketahanan politik mewujud dalam sistem politik punya peran di bawah ini, kecuali ….", o: ["A. mensejahterakan rakyat", "B. mempertahankan norma", "C. penyataan sosial", "D. penyelesaian konflik"], a: 0 },
+            { q: "5. Ideologi Pancasila dalam konteks ketahanan nasional berperan sebagai berikut, kecuali ….", o: ["A. menangkal ideologi asing yang tidak sesuai pribadi bangsa", "B. mengajarkan cinta tanah air", "C. mempertahankan pola atau norma yang berlaku", "D. memelihara persatuan dan kesatuan nasional"], a: 1 },
+            { q: "6. Geostrategi Indonesia dirumuskan dan dilaksanakan dengan berlandaskan Pancasila yang mengandung unsur ….", o: ["A. perlusan wilayah", "B. kekerasan", "C. ekspansionisme", "D. demokrasi Pancasila"], a: 3 },
+            { q: "7. Wujud karya nyata dalam membangun integrasi nasional di masyarakat melalui ….", o: ["A. perilaku gotong royong", "B. saling curiga", "C. acuh tak acuh", "D. menumbuhkan sikap permusuhan"], a: 0 },
+            { q: "8. Konsensus nasional sebagai dasar rujukan integrasi nasional adalah ….", o: ["A. agama", "B. nilai adat", "C. nilai moral", "D. Pancasila"], a: 3 },
+            { q: "9. Di tengah situasi dunia yang serba berubah tersebut, idealisme sangat penting untuk dimiliki oleh seorang individu karena alasan-alasan berikut, kecuali ….", o: ["A. idealisme tersebut akan membuat hidup seseorang menjadi lebih terarah", "B. idealisme akan membantu orang tersebut di dalam mempertahankan diri di tengah ancaman", "C. idealisme akan membantu seseorang dalam menghadapi hambatan dan godaan yang mengganggu usahanya", "D. idealisme akan membuat seseorang menjadi lebih terkenal"], a: 3 },
+            { q: "10. Identitas nasional yang diatur di dalam Undang-Undang No. 24 Tahun 2009 adalah …", o: ["A. Kebudayaan nasional", "B. Lagu daerah", "C. UUD NRI Tahun 1945", "D. Bendera negara dan lagu kebangsaan"], a: 3 },
+            { q: "11. Menurut Robert de Ventos sebagaimana dikutip oleh Suryo (2002), munculnya identitas nasional dipengaruhi oleh empat faktor penting, yaitu faktor …", o: ["A. utama, pendukung, penarik, reaktif", "B. primer, pendukung, penarik, evaluatif", "C. primer, pendorong, penarik, reaktif", "D. primer, pendukung, evaluatif, reaktif"], a: 2 },
+            { q: "12. Persoalan hak dan kewajiban menjadi persoalan yang penting dalam konteks kehidupan bermasyarakat, berbangsa, dan bernegara, setidaknya karena tiga alasan sebagaimana tersebut di bawah ini, kecuali ….", o: ["A. persoalan hak asasi manusia adalah isu populer di era kontemporer", "B. negara pada hakikatnya adalah institusi yang terdiri atas manusia-manusia yang masing-masing memiliki hak asasi semenjak dilahirkan", "C. Indonesia adalah negara yang menggunakan paham demokrasi yang memberikan tempat yang penting bagi kebebasan hak asasi dan kebebasan manusia", "D. Indonesia, sebagai sebuah negara mengakui bahwa kebebasan dan kemerdekaan merupakan hak segala bangsa"], a: 0 },
+            { q: "13. The Universal Declaration of Human Rights atau pengakuan hak asasi manusia secara universal dihasilkan pada …", o: ["A. 10 Desember 1945", "B. 10 Desember 1946", "C. 10 Desember 1947", "D. 10 Desember 1948"], a: 3 },
+            { q: "14. Ketentuan di dalam Pancasila yang secara eksplisit menunjukkan bahwa Indonesia adalah negara yang menganut sistem demokrasi adalah ….", o: ["A. sila pertama", "B. sila kedua", "C. sila ketiga", "D. sila keempat"], a: 3 },
+            { q: "15. Salah satu kelemahan dari sistem demokrasi ini adalah tidak stabilnya pemerintahan karena lembaga legislatif memiliki wewenang yang besar untuk menjatuhkan kekuasaan eksekutif. Sistem demokrasi yang dimaksud ini adalah demokrasi sistem ….", o: ["A. presidensial", "B. parlementer", "C. liberal", "D. sosial"], a: 1 },
+            { q: "16. Berikut ini yang bukan termasuk tujuan dari negara adalah …..", o: ["A. membangun kondisi masyarakat yang stabil", "B. memajukan kesejahteraan umum", "C. menjamin keamanan masyarakat", "D. mempersiapkan perang"], a: 3 },
+            { q: "17. Hukum dasar tidak tertulis yang berlaku dalam praktik ketatanegaraan dinamakan …", o: ["A. hukum adat", "B. konstitusi", "C. konvensi", "D. treaty"], a: 2 },
+            { q: "18. Secara istilah, otonomi daerah dapat diartikan sebagai hak, wewenang, dan kewajiban daerah otonom untuk mengatur atau mengurus sendiri urusan pemerintahan. Berdasarkan pengertian tersebut maka esensi di dalam otonomi daerah adalah ….", o: ["A. kebebasan", "B. wewenang untuk mengatur pemerintahan sendiri", "C. pemisahan kekuasaan", "D. pembagian kekuasaan"], a: 1 },
+            { q: "19. Kaitannya dengan praktik kegiatan pemerintahan, kita mengenal beberapa istilah, antara lain governance dan government. Perbedaan dari kedua istilah tersebut adalah ….", o: ["A. istilah government memiliki cakupan yang jauh lebih sempit dibandingkan dengan istilah governance", "B. keduanya sama-sama mengacu pada pemerintah sebagai pemegang kekuasaan", "C. istilah government menunjuk pada lembaga legislatif, sedangkan kata governance menunjuk pada lembaga eksekutif", "D. government dan governance berasal dari kata dasar to govern yang artinya memerintah"], a: 0 },
+            { q: "20. Tata kelola pemerintahan yang baik juga dapat dilihat dari seberapa baik pemerintah menggunakan sumber daya yang ada untuk menyelesaikan berbagai macam persoalan yang dihadapi. Hal tersebut merupakan implementasi dari prinsip good governance, yaitu ….", o: ["A. akuntabilitas", "B. transparansi", "C. efektif dan efisien", "D. kesetaraan"], a: 2 },
+            { q: "21. Pendidikan Kewarganegaraan menjadi wahana pendidikan nilai, moral, dan pendidikan budi pekerti sehingga dapat menjadi sarana transformasi pendidikan karakter. Hal ini merupakan pengertian Pendidikan Kewarganegaraan secara filsafat dari perspektif ….", o: ["A. ontologi", "B. epistemologi", "C. metodologi", "D. aksiologi"], a: 3 },
+            { q: "22. Wawasan Nusantara juga terkait dengan pandangan kesatuan sosial budaya, yang bermakna ….", o: ["A. bangsa Indonesia terdiri dari berbagai suku, agama, dan ras", "B. ragam budaya menjadi modal bangsa dengan menerima nilai-nilai budaya lain yang tidak bertentangan dengan nilai budaya bangsa", "C. kesatuan wilayah yang diselenggarakan berdasarkan Pancasila dan Undang-Undang Dasar 1945", "D. bangsa Indonesia hidup berdampingan dengan bangsa lain dan ikut menciptakan ketertiban dunia"], a: 1 },
+            { q: "23. Inti tata organisasi Indonesia adalah UUD 1945 yang terdiri dari unsur-unsur di bawah ini, kecuali …", o: ["A. sistem pemerintahan", "B. sistem perwakilan", "C. kedaulatan negara", "D. undang-undang"], a: 3 },
+            { q: "24. Ketahanan sosial budaya mengandung pengertian berikut, kecuali ….", o: ["A. kondisi kehidupan bangsa yang dijiwai Pancasila", "B. mengembangkan kehidupan masyarakat yang rukun dan bersatu", "C. mewujudkan demokrasi Pancasila yang berbasis kekeluargaan dan gotong royong", "D. kemampuan menangkal penetrasi budaya asing yang tidak sesuai dengan kebudayaan nasional"], a: 2 },
+            { q: "25. Indonesia dalam posisi silang yang strategis harus mampu menciptakan kekuatan sentrifugal, artinya ….", o: ["A. perlusan wilayah", "B. kekuatan yang mengubah ancaman dari luar menjadi kekuatan nasional", "C. melaksanakan ketertiban dunia", "D. keterhubungan dengan lingkungan internasional yang bersifat kawasan maupun global"], a: 1 },
+            { q: "26. Perhatikan tabel ancaman berikut: (1) Bahan konsumsi, (2) Konflik antar kelompok, (3) Hoax, (4) Narkotika, (5) Separatisme. Yang merupakan bentuk ancaman terhadap integrasi nasional dari aspek sosial kemasyarakatan dapat ditunjukkan dari tabel nomer ….", o: ["A. 1", "B. 2", "C. 3", "D. 4"], a: 1 },
+            { q: "27. Berikut ini yang bukan termasuk cita-cita kemerdekaan negara Indonesia sesuai dengan yang tertulis di dalam Pembukaan UUD 1945 adalah ….", o: ["A. bersatu", "B. berdaulat", "C. mandiri dan sejahtera", "D. adil dan makmur"], a: 2 },
+            { q: "28. Character building atau upaya pembangunan karakter tersebut adalah upaya yang sangat penting karena ….", o: ["A. penguatan kepribadian dan karakter bangsa", "B. memperkuat jati diri yang kuat", "C. mampu menjadi filter ampuh bagi berbagai nilai budaya luar yang masuk ke dalam berbagai sendi-sendi kehidupan masyarakat", "D. semua jawaban benar"], a: 3 },
+            { q: "29. Hakikat manusia adalah bersusun, yaitu terdiri atas unsur-unsur yang majemuk tunggal atau monopluralis. Di bawah ini yang tidak termasuk susunan hakikat manusia yang monopluralis adalah ….", o: ["A. susunan kodrat", "B. sifat kodrat", "C. kedudukan kodrat", "D. kehendak kodrat"], a: 3 },
+            { q: "30. Hak yang dimiliki oleh setiap manusia tersebut perlu dijaga, dihormati, dijunjung tinggi, oleh siapapun untuk juga oleh negara, tujuannya adalah …", o: ["A. menjaga nama baik Indonesia di dunia", "B. menjunjung tinggi hukum dan aturan perundang-undangan", "C. demi penghormatan terhadap harkat dan martabat manusia", "D. melatih moralitas manusia"], a: 2 },
+            { q: "31. Di bawah ini yang termasuk di dalam hak asasi politik atau political rights adalah hak …", o: ["A. kebebasan untuk bergerak, bepergian, atau berpindah-pindah tempat", "B. ikut serta dalam kegiatan pemerintahan", "C. untuk mendapatkan perlakuan yang sama dalam hukum dan pemerintahan", "D. kebebasan melakukan kegiatan jual beli"], a: 1 },
+            { q: "32. Dikaji dari asal katanya, istilah demokrasi berasal dari kata di dalam bahasa Yunani, yaitu kata 'demos' dan 'kratein' atau 'kratos.' Berdasarkan arti kata secara etimologis tersebut, dapat disimpulkan bahwa kata demokrasi secara umum berarti ….", o: ["A. kekuasaan raja", "B. kekuasaan rakyat", "C. kekuasaan partai", "D. kekuasaan hukum"], a: 1 },
+            { q: "33. Demokrasi yang mendasarkan pada nilai-nilai liberal disebut dengan demokrasi sistem …", o: ["A. liberal", "B. kapitalis", "C. sosialis", "D. komunis"], a: 0 },
+            { q: "34. Istilah state dalam pengertian bahasa Indonesia disebut …..", o: ["A. negara", "B. bangsa", "C. bagian", "D. kota"], a: 0 },
+            { q: "35. Pada bagian awal suatu konstitusi biasanya berisi tentang ….", o: ["A. asas dan tujuan negara", "B. jaminan dan perlindungan hak asasi manusia", "C. identitas negara", "D. cara melakukan perubahan konstitusi"], a: 0 },
+            { q: "36. Konsep good governance tidak dapat dipisahkan dengan konsep reformasi secara keseluruhan. Di bawah ini yang menjadi alasan mengapa reformasi dan good governance menjadi dua konsep yang saling berhubungan adalah ….", o: ["A. reformasi merupakan semangat untuk membangun Indonesia baru", "B. reformasi membawa semangat untuk membongkar tata pemerintahan yang lama dan menggantikannya dengan tata pemerintahan yang baru", "C. reformasi merupakan manifestasi dari semangat demokrasi", "D. good governance adalah konsep yang diadopsi dari semangat pembaharuan reformasi"], a: 1 },
+            { q: "37. Tata kelola pemerintahan yang baik juga ditentukan oleh seberapa cepat pemerintahan tersebut merespons berbagai macam persoalan yang muncul di masyarakat. Hal ini merupakan implementasi dari prinsip good governance, yaitu ….", o: ["A. responsif", "B. taat hukum", "C. berorientasi kesepakatan", "D. kesetaraan"], a: 0 },
+            { q: "38. Yang termasuk mata kuliah wajib universitas adalah ….", o: ["A. Pendidikan Kewirausahaan", "B. Pendidikan Kepemimpinan", "C. Pendidikan Kewarganegaraan", "D. Pendidikan Bahasa Inggris"], a: 2 },
+            { q: "39. Kesatuan pertahanan dan keamanan juga diwujudkan dalam Wawasan Nusantara yang berarti di bawah ini, kecuali ….", o: ["A. satu daerah terancam berarti ancaman bagi seluruh bangsa", "B. kesadaran cinta tanah air dan bangsa", "C. partisipasi warga negara dalam bela negara", "D. mengakui segala bentuk perbedaan sebagai kenyataan hidup yang niscaya"], a: 3 },
+            { q: "40. Geopolitik merupakan landasan ilmiah bagi tindakan politik suatu organisasi negara untuk mendapatkan ruang hidupnya. Konsep ini dinyatakan oleh …", o: ["A. Rudolf Kjellen", "B. Frederick Ratzel", "C. Karl Haushofer", "D. Charles Fuller"], a: 1 },
+            { q: "41. Ketahanan ekonomi mewujud dalam sistem ekonomi. Karakter sistem ekonomi nasional Indonesia adalah di bawah ini, kecuali ….", o: ["A. persaingan bebas", "B. bersifat kekeluargaan", "C. negara menguasai sumber-sumber produksi yang menyangkut hajat hidup orang banyak", "D. beradaptasi dengan dinamika pasar internasional"], a: 0 },
+            { q: "42. Budaya Indonesia, dalam geostrategi berperan sebagai ….", o: ["A. moral bangsa", "B. ideologi bangsa", "C. visi bangsa", "D. politik negara"], a: 0 },
+            { q: "43. Upaya untuk dapat memperkuat integrasi nasional adalah ….", o: ["A. membangun persatuan dan kesatuan warga", "B. ikut terlibat dalam kegiatan separatisme", "C. ikut konvoi geng motor", "D. terlibat dalam perkelahian antar kampung"], a: 0 },
+            { q: "44. Berikut ini perilaku yang dapat menangkal disintegrasi bangsa adalah ….", o: ["A. menjauhi diri dari sikap inklusif", "B. mengembangkan sikap etnosentrisme", "C. melakukan tindakan fanatisme berlebihan", "D. menghindari diri dari sikap sukuisme"], a: 3 },
+            { q: "45. Pengertian identitas nasional yang di dalam yang tertinggi menjadi nilai-nilai budaya yang mempunyai ciri khas dan membedakan dengan bangsa lain adalah pengertian dari ….", o: ["A. kepribadian bangsa", "B. pandangan hidup", "C. identitas nasional", "D. ideologi nasional"], a: 2 },
+            { q: "46. Pancasila sebagai pandangan hidup bangsa Indonesia merupakan perjanjian luhur bangsa Indonesia. Maksud dari pernyataan ini adalah …", o: ["A. Pancasila tidak boleh diubah", "B. Pancasila merupakan suatu kesepakatan yang memiliki makna dan nilai yang sangat tinggi, oleh karenanya senantiasa dihormati dan dijunjung tinggi", "C. Pancasila dapat ditafsirkan ulang", "D. penafsiran atas Pancasila dapat disesuaikan sesuai dengan perkembangan zaman"], a: 1 },
+            { q: "47. Di dalam sejarah perkembangan hak asasi manusia, peristiwa bersejarah yang dianggap sebagai tonggak perjuangan manusia mengakkan hak asasi manusia adalah …", o: ["A. Declaration of Independence", "B. Bill of Rights", "C. Magna Charta", "D. Universal Declaration of Human Rights"], a: 2 },
+            { q: "48. 'Segala warga negara bersamaan kedudukannya di dalam hukum dan pemerintahan dan wajib menjunjung hukum dan pemerintahan itu dengan tidak ada kecualinya' merupakan bunyi dari ketentuan di dalam UUD NRI Tahun 1945, yaitu Pasal ….", o: ["A. 25", "B. 26", "C. 27", "D. 28 A"], a: 2 },
+            { q: "49. Pada masa Yunani Kuno, tidak semua warga negara mendapatkan hak politiknya di dalam pemerintahan. Di bawah ini golongan warga negara yang memiliki hak politik adalah ….", o: ["A. wanita", "B. pria dewasa", "C. budak", "D. anak-anak"], a: 1 },
+            { q: "50. Pembentukan Komisi Pemberantasan Korupsi atau KPK didasari oleh peraturan perundang-undangan, yaitu ….", o: ["A. UU No. 28 Tahun 2002", "B. UU No. 29 Tahun 2002", "C. UU No. 30 Tahun 2002", "D. UU No. 32 Tahun 2002"], a: 2 },
+        ];
+
+        let currentQIndex = 0;
+        let score = 0;
+        let isAnswered = false;
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function initQuiz() {
+            //shuffleArray(questionBank);
+            document.getElementById('q-total').innerText = questionBank.length;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const qData = questionBank[currentQIndex];
+            document.getElementById('q-current').innerText = currentQIndex + 1;
+            document.getElementById('question-text').innerText = qData.q;
+
+            const optsDiv = document.getElementById('options-container');
+            optsDiv.innerHTML = '';
+
+            qData.o.forEach((optText, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = optText;
+                btn.onclick = () => checkAnswer(index, qData.a, btn);
+                optsDiv.appendChild(btn);
+            });
+
+            document.getElementById('next-btn').style.display = 'none';
+            isAnswered = false;
+        }
+
+        function checkAnswer(selectedIndex, correctIndex, btnElement) {
+            if (isAnswered) return;
+            isAnswered = true;
+
+            const allBtns = document.querySelectorAll('.option-btn');
+
+            if (selectedIndex === correctIndex) {
+                btnElement.classList.add('correct');
+                score++;
+                document.getElementById('score').innerText = score;
+            } else {
+                btnElement.classList.add('wrong');
+                allBtns[correctIndex].classList.add('correct');
+            }
+
+            allBtns.forEach(btn => btn.disabled = true);
+            document.getElementById('next-btn').style.display = 'block';
+        }
+
+        function nextQuestion() {
+            currentQIndex++;
+            if (currentQIndex < questionBank.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('quiz-interface').style.display = 'none';
+            document.getElementById('result-screen').style.display = 'block';
+            document.getElementById('final-score').innerText = score;
+        }
+
+        initQuiz();
+    </script>
+
+</body>
+
+</html>

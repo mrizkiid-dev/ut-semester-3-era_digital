@@ -1,111 +1,107 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
+    <!-- ...existing code... -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz MKDI4202 - Belajar Era Digital</title>
+    <title>Document</title>
+    <!-- ...existing code... -->
     <style>
-        :root {
-            --primary: #2563eb;
-            --bg: #f8fafc;
-            --card: #ffffff;
-        }
-
-        body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background-color: var(--bg);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .container {
-            background: var(--card);
-            width: 100%;
-            max-width: 600px;
-            border-radius: 16px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            padding: 3rem;
-            text-align: center;
-        }
-
-        h1 {
-            color: #1e293b;
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .subtitle {
-            color: #64748b;
-            margin-bottom: 3rem;
-            font-size: 1.1rem;
-        }
-
-        .mode-cards {
-            display: grid;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .mode-card {
-            background: white;
-            border: 3px solid #e2e8f0;
-            border-radius: 16px;
-            padding: 2rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: block;
-        }
-
-        .mode-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.2);
-        }
-
-        .mode-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .mode-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 0.5rem;
-        }
-
-        .mode-desc {
-            color: #64748b;
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
+      :root {
+        --bg: #f7f8fb;
+        --card-bg: #fff;
+        --text: #111827;
+        --muted: #6b7280;
+        --accent: #2563eb;
+        --border: #e5e7eb;
+        --shadow: 0 4px 16px rgba(17,24,39,.08);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans";
+        background: var(--bg);
+        color: var(--text);
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+      }
+      .wrapper {
+        width: 100%;
+        max-width: 900px;
+        padding: 24px;
+      }
+      .header {
+        text-align: center;
+        margin-bottom: 16px;
+      }
+      .header h1 {
+        font-size: 1.5rem;
+        margin: 0 0 6px;
+      }
+      .header p {
+        margin: 0;
+        color: var(--muted);
+        font-size: .95rem;
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+      }
+      .card {
+        display: block;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 18px 20px;
+        text-decoration: none;
+        color: inherit;
+        box-shadow: var(--shadow);
+        transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+      }
+      .card h2 {
+        font-size: 1.1rem;
+        margin: 0 0 6px;
+      }
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: .95rem;
+      }
+      .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(17,24,39,.12);
+        border-color: rgba(37,99,235,.3);
+      }
+      .badge {
+        display: inline-block;
+        font-size: .75rem;
+        color: var(--accent);
+        background: rgba(37,99,235,.08);
+        padding: 4px 8px;
+        border-radius: 999px;
+        margin-left: 8px;
+      }
     </style>
 </head>
 <body>
-
-<div class="container">
-    <h1>Quiz MKDI4202</h1>
-    <p class="subtitle">Belajar Era Digital</p>
-
-    <div class="mode-cards">
-        <a href="latihan.html" class="mode-card">
-            <div class="mode-icon">🎯</div>
-            <div class="mode-title">Mode Latihan</div>
-            <div class="mode-desc">Latihan soal dengan feedback langsung dan skor</div>
+    <!-- ...existing code... -->
+    <div class="wrapper">
+      <div class="header">
+        <h1>Materi</h1>
+        <p>Pilih topik untuk mulai belajar</p>
+      </div>
+      <div class="cards">
+        <a class="card" href="pancasila/index.html">
+          <h2>Pancasila <span class="badge">UT</span></h2>
+          <!-- <p>Ringkasan dan materi inti</p> -->
         </a>
-
-        <a href="review.html" class="mode-card">
-            <div class="mode-icon">📚</div>
-            <div class="mode-title">Lihat Semua Soal & Jawaban</div>
-            <div class="mode-desc">Pelajari semua soal beserta kunci jawabannya</div>
+        <a class="card" href="bed/index.html">
+          <h2>Belajar di Era Digital</h2>
         </a>
+      </div>
     </div>
-</div>
-
+    <!-- ...existing code... -->
 </body>
 </html>
